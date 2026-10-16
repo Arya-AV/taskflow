@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useToast } from "../components/Shared/Toast.jsx";
 import api from "../utils/api.js";
+import { validatePassword } from "../utils/validation.js";
 
 const Profile = () => {
   const { user, updateLocalUser } = useAuth();
@@ -50,7 +51,17 @@ const Profile = () => {
   const handlePasswordSave = async (e) => {
     e.preventDefault();
     if (!pwForm.currentPassword) { setErrors({ currentPassword: "Current password is required." }); return; }
-    if (!pwForm.newPassword || pwForm.newPassword.length < 6) { setErrors({ newPassword: "New password must be at least 6 characters." }); return; }
+    if (!pwForm.newPassword) {
+      setErrors({ newPassword: "New password is required." });
+      return;
+    }
+
+    const passwordErrors = validatePassword(pwForm.newPassword);
+
+    if (passwordErrors.length > 0) {
+      setErrors({ newPassword: passwordErrors[0] });
+      return;
+    }
     if (pwForm.newPassword !== pwForm.confirmNew) { setErrors({ confirmNew: "Passwords do not match." }); return; }
 
     setPwLoading(true);

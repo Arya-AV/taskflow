@@ -21,7 +21,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Demo User\",\n  \"email\": \"demo@example.com\",\n  \"password\": \"Demo1234\"\n}"
+              "raw": "{\n  \"name\": \"Demo User\",\n  \"email\": \"demo@example.com\",\n  \"password\": \"DemoStrong123!\"\n}"
             }
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["if (pm.response.code === 201) { pm.collectionVariables.set('token', pm.response.json().token); }"] } }]
@@ -86,7 +86,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"currentPassword\": \"Demo1234\",\n  \"newPassword\": \"NewPass56\"\n}"
+              "raw": "{\n  \"currentPassword\": \"DemoStrong123!\",\n  \"newPassword\": \"NewStrong456!\"\n}"
             }
           }
         }

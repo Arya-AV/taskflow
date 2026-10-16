@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const { generateToken } = require("../utils/token");
+const { validatePassword } = require("../utils/password");
 
 // ── POST /api/v1/auth/signup ─────────────────
 const signup = async (req, res) => {
@@ -11,13 +12,11 @@ const signup = async (req, res) => {
     errors.push("Name must be at least 2 characters.");
   if (!email || !/^\S+@\S+\.\S+$/.test(email))
     errors.push("Provide a valid email.");
-  if (!password || password.length < 6)
-    errors.push("Password must be at least 6 characters.");
-  if (password && !/[A-Z]/.test(password))
-    errors.push("Password must contain at least one uppercase letter.");
-  if (password && !/[0-9]/.test(password))
-    errors.push("Password must contain at least one number.");
-
+  if (!password) {
+    errors.push("Password is required.");
+  } else {
+    errors.push(...validatePassword(password));
+  }
   if (errors.length) {
     return res.status(400).json({ success: false, message: errors[0], errors });
   }

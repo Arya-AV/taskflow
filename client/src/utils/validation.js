@@ -9,7 +9,7 @@ export const passwordRules = [
   { label: "At least one lowercase letter", test: (p) => /[a-z]/.test(p) },
   { label: "At least one number", test: (p) => /\d/.test(p) },
   {
-    label: "At least one special character (!@#$%^&*)",
+    label: 'At least one special character (!@#$%^&*(),.?":{}|<>)',
     test: (p) => /[!@#$%^&*(),.?":{}|<>]/.test(p),
   },
   {

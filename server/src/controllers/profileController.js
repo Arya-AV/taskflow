@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const { validatePassword } = require("../utils/password");
 
 // ── GET /api/v1/me ───────────────────────────
 const getProfile = async (req, res) => {
@@ -41,10 +42,13 @@ const updateProfile = async (req, res) => {
         message: "Current password is incorrect.",
       });
     }
-    if (newPassword.length < 6) {
+    const passwordErrors = validatePassword(newPassword);
+
+    if (passwordErrors.length > 0) {
       return res.status(400).json({
         success: false,
-        message: "New password must be at least 6 characters.",
+        message: passwordErrors[0],
+        errors: passwordErrors,
       });
     }
     // Re-fetch full doc so pre-save hook fires properly

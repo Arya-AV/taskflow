@@ -40,24 +40,21 @@ All errors return a consistent JSON response:
 ```json
 {
   "success": false,
-  "message": "Human-readable error description"
+  "message": "Human-readable error description",
+  "errors": [
+    "Name must be at least 2 characters.",
+    "Provide a valid email.",
+    "Password must be at least 12 characters.",
+    "Password must contain at least one uppercase letter.",
+    "Password must contain at least one lowercase letter.",
+    "Password must contain at least one number.",
+    "Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>).",
+    "Password must not start or end with whitespace."
+  ]
 }
 ```
 
 Validation errors also include an `errors` array with each failing rule (for example, when multiple signup rules fail):
-```json
-{
-  "success": false,
-  "message": "Name must be at least 2 characters.",
-  "errors": [
-    "Name must be at least 2 characters.",
-    "Provide a valid email.",
-    "Password must be at least 6 characters.",
-    "Password must contain at least one uppercase letter.",
-    "Password must contain at least one number."
-  ]
-}
-```
 
 ---
 
@@ -94,7 +91,7 @@ Creates a new user account and returns a JWT authentication token.
 - **Request Body** (`application/json`):
   - `name` (string, required): Minimum 2 characters.
   - `email` (string, required): Valid email address format. Must be unique.
-  - `password` (string, required): Minimum 6 characters, must contain at least one uppercase letter (`A-Z`) and at least one number (`0-9`).
+  - `password` (string, required): Minimum 12 characters; must contain at least one uppercase letter (`A-Z`), one lowercase letter (`a-z`), one number (0-9), and one special character (`!@#$%^&*(),.?":{}|<>`). Must not start or end with whitespace.
 
 #### Example Request
 ```bash
@@ -103,7 +100,7 @@ curl -X POST http://localhost:5000/api/v1/auth/signup \
   -d '{
     "name": "Jane Doe",
     "email": "jane@example.com",
-    "password": "Password123"
+    "password": "StrongPass123!"
   }'
 ```
 
@@ -134,9 +131,12 @@ curl -X POST http://localhost:5000/api/v1/auth/signup \
     "errors": [
       "Name must be at least 2 characters.",
       "Provide a valid email.",
-      "Password must be at least 6 characters.",
+      "Password must be at least 12 characters.",
       "Password must contain at least one uppercase letter.",
-      "Password must contain at least one number."
+      "Password must contain at least one lowercase letter.",
+      "Password must contain at least one number.",
+      "Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>).",
+      "Password must not start or end with whitespace."
     ]
   }
   ```
@@ -302,7 +302,7 @@ Updates profile information (name, bio, avatar) or changes password.
   - `bio` (string): Maximum 300 characters.
   - `avatar` (string): Avatar image URL.
   - `currentPassword` (string): Required if changing password.
-  - `newPassword` (string): Minimum 6 characters.
+  - `newPassword` (string): Must satisfy all six password rules described in the Sign Up endpoint.
 
 #### Example Request
 ```bash
@@ -355,11 +355,14 @@ curl -X PUT http://localhost:5000/api/v1/me \
     "message": "Current password is incorrect."
   }
   ```
-- **400 Bad Request** - New password too short:
+- **400 Bad Request** - Invalid new password:
   ```json
   {
     "success": false,
-    "message": "New password must be at least 6 characters."
+    "message": "Password must be at least 12 characters.",
+    "errors": [
+      "Password must be at least 12 characters."
+    ]
   }
   ```
 
