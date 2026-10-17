@@ -40,10 +40,16 @@ All errors return a consistent JSON response:
 ```json
 {
   "success": false,
-  "message": "Human-readable error description",
+  "message": "Human-readable error description"
+}
+```
+
+Validation errors also include an `errors` array with each failing rule (for example, when multiple signup rules fail):
+```json
+{
+  "success": false,
+  "message": "Validation failed",
   "errors": [
-    "Name must be at least 2 characters.",
-    "Provide a valid email.",
     "Password must be at least 12 characters.",
     "Password must contain at least one uppercase letter.",
     "Password must contain at least one lowercase letter.",
@@ -53,8 +59,6 @@ All errors return a consistent JSON response:
   ]
 }
 ```
-
-Validation errors also include an `errors` array with each failing rule (for example, when multiple signup rules fail):
 
 ---
 
@@ -173,7 +177,7 @@ curl -X POST http://localhost:5000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "jane@example.com",
-    "password": "Password123"
+    "password": "StrongPass123!"
   }'
 ```
 

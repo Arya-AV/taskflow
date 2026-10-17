@@ -16,7 +16,7 @@ const passwordRules = [
     test: (password) => /\d/.test(password),
   },
   {
-    label: 'Password must contain at least one special character (!@#$%^&*(),.?":{}|<>)',
+    label: 'Password must contain at least one special character (!@#$%^&*(),.?":{}|<>).',
     test: (password) => /[!@#$%^&*(),.?":{}|<>]/.test(password),
   },
   {

@@ -34,7 +34,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"demo@example.com\",\n  \"password\": \"Demo1234\"\n}"
+              "raw": "{\n  \"email\": \"demo@example.com\",\n  \"password\": \"DemoStrong123!\"\n}"
             }
           },
           "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["if (pm.response.code === 200) { pm.collectionVariables.set('token', pm.response.json().token); }"] } }]
